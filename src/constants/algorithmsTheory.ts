@@ -15,7 +15,8 @@ export const sortingAlgorithms: Record<Algorithm, AlgorithmDetails> = {
     title: "Selection Sort",
     longDescription:
       "Selection Sort is a basic algorithm that works by repeatedly selecting the smallest unsorted element and moving it to the sorted portion of the list. It’s simple and minimizes swaps, which is beneficial when memory writes are costly. However, with an O(n²) time complexity, it becomes inefficient on larger datasets or nearly sorted arrays, making it more suitable for small collections.",
-    timeComplexity: {
+    
+      timeComplexity: {
       best: "O(n²)",
       average: "O(n²)",
       worst: "O(n²)",

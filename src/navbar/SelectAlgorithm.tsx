@@ -1,4 +1,4 @@
-import { cn } from "../utils/utils";
+import { cn } from "../utils/utility";
 import { Algorithm } from "../constants/algoTypes";
 import { useStore } from "../constants/storeState";
 import { Button } from "../components/Button";

@@ -14,12 +14,12 @@ export default {
 
     extend: {
       colors: {
-        background: "rgb(249, 247, 247)",
-        foreground: "rgb(32, 32, 36)",
-        accent: "rgb(63, 114, 175)",
-        primary: "rgb(17, 45, 78)",
-        secondary: "rgb(220, 167, 255)",
-        tertiary: "rgb(255, 215, 0)",  
+        background: "rgb(238, 241, 255)",
+        foreground: "rgb(20, 40, 80)",
+        accent: "rgb(170, 196, 255)",
+        primary: "rgb(128, 130, 215)",
+        secondary: "rgb(176, 85, 237)",
+        tertiary: "rgb(0, 201, 220)",  
       },
       keyframes: {
         "accordion-down": {

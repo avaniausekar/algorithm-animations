@@ -7,6 +7,7 @@ import { resolveState } from "../utils/updateState";
 export type StoreState = {
   isMobile: boolean;
   arrayId: number;
+  //MutableRefObject - allows you to store and update a mutable value. 
   speedRef: MutableRefObject<number>;
   abortRef: MutableRefObject<boolean>;
   isPlaying: boolean;
@@ -29,10 +30,10 @@ export type StoreState = {
   createNewArray: () => void;
 };
 
-let speedRef = createRef<number>() as React.MutableRefObject<number>; // eslint-disable-line prefer-const
+let speedRef = createRef<number>() as React.MutableRefObject<number>; 
 speedRef.current = 500;
 
-let abortRef = createRef<boolean>() as React.MutableRefObject<boolean>; // eslint-disable-line prefer-const
+let abortRef = createRef<boolean>() as React.MutableRefObject<boolean>;
 abortRef.current = false;
 
 export const useStore = create<StoreState>((set) => ({

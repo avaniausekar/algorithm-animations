@@ -1,4 +1,4 @@
-import { cn } from "../utils/utils";
+import { cn } from "../utils/utility";
 import { useStore } from "../constants/storeState";
 import { motion, Reorder } from "framer-motion";
 import { memo } from "react";

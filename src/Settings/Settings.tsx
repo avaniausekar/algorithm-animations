@@ -12,6 +12,7 @@ export const Settings = () => {
       </div>
       <div className="flex items-center mt-3">
         <SpeedSlider />
-      </div></>
+      </div>
+    </>
   );
 };

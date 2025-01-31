@@ -18,7 +18,6 @@ function App() {
           <Header />
           <Separator />
           <Settings />
-
         </div>
         <AlgorithmVisualizer />
       </main>

@@ -1,4 +1,4 @@
-import { cn } from "../utils/utils";
+import { cn } from "../utils/utility";
 import { useStore } from "../constants/storeState";
 import { Button } from "../components/Button";
 
@@ -34,7 +34,7 @@ export const DisplayModeSelector = () => {
             key={mode}
             variant="ghost"
             className={`px-4 py-2 capitalize border-2 border-accent hover:bg-accent hover:text-background ${
-              mode === displayMode ? "bg-accent text-background" : ""
+              mode === displayMode ? "bg-accent text-black" : ""
             }`}
             onClick={() => handleDisplayModeChange(mode)}
             disabled={isPlaying}
