@@ -13,8 +13,8 @@ export const Header = () => {
           {sortingAlgorithms[activeAlgorithm].title}
         </h1>
         <div className="flex items-center gap-4 bg-accent lg:bg-background p-4 lg:p-0 rounded">
-          <h2 className="flex items-center gap-2 font-medium lg:flex-row-reverse lg:bg-accent lg:px-4 lg:py-2 lg:rounded"> Time
-            Complexity <ClockIcon className="w-4 h-4" />
+          <h2 className="flex items-center gap-2 font-medium lg:flex-row-reverse lg:bg-accent lg:px-4 lg:py-2 lg:rounded text-foreground"> Time
+            Complexity <ClockIcon className="w-4 h-4 text-foreground" />
           </h2>
           <div className="flex items-center gap-2 lg:gap-4">
             <Badge className="flex flex-col md:flex-row w-1/3 md:w-auto md:gap-2">

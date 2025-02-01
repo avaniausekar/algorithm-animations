@@ -16,8 +16,11 @@ export const Controls = () => {
     abortRef,
     doneItems,
     items,
+    setSwaps,
+    setComparisons,
+    setTime,
   } = useStore();
-  const { selectionSort, bubbleSort, quickSort, insertionSort, mergeSort,heapSort } = useSortingAlgorithms();
+  const { selectionSort, bubbleSort, quickSort, insertionSort, mergeSort, heapSort } = useSortingAlgorithms();
 
   const handlePlayAnimation = async () => {
     setIsPlaying(true);
@@ -61,7 +64,12 @@ export const Controls = () => {
         <Button
           variant="ghost"
           className="bg-background border-2 border-accent hover:bg-accent text-base text-foreground hover:text-foreground h-auto px-4 py-2 w-full lg:w-48"
-          onClick={createNewArray}
+          onClick={() => {
+            createNewArray(); 
+            setSwaps(0);
+            setComparisons(0); 
+            setTime(0); 
+          }}
           disabled={isPlaying}
         >
           <UpdateIcon className="h-4 w-4 mr-2" /> Reset

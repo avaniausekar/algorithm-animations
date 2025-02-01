@@ -35,7 +35,7 @@ export const sortingAlgorithms: Record<Algorithm, AlgorithmDetails> = {
   bubble: {
     title: "Bubble Sort",
     longDescription:
-      "Bubble Sort is a straightforward algorithm that repeatedly steps through the list, compares adjacent elements, and swaps them if necessary. It’s best suited for nearly sorted arrays, where its best-case time complexity is O(n). Despite its simplicity, Bubble Sort is inefficient for large datasets, as its average and worst-case complexities are both O(n²).",
+      "",
     timeComplexity: {
       best: "O(n)",
       average: "O(n²)",

@@ -18,6 +18,9 @@ export type StoreState = {
   activeItems: number[];
   tempItems: number[];
   doneItems: number[];
+  swaps: number;
+  comparisons: number;
+  time: number;
   setIsMobile: (isMobile: boolean) => void;
   setDisplayMode: (displayMode: DisplayMode) => void;
   setIsPlaying: (isPlaying: boolean) => void;
@@ -27,10 +30,13 @@ export type StoreState = {
   setActiveItems: StateUpdater<number[]>;
   setTempItems: StateUpdater<number[]>;
   setDoneItems: StateUpdater<number[]>;
+  setSwaps: (swaps: number) => void;
+  setComparisons: (comparisons: number) => void;
+  setTime: (time: number) => void;
   createNewArray: () => void;
 };
 
-let speedRef = createRef<number>() as React.MutableRefObject<number>; 
+let speedRef = createRef<number>() as React.MutableRefObject<number>;
 speedRef.current = 500;
 
 let abortRef = createRef<boolean>() as React.MutableRefObject<boolean>;
@@ -49,13 +55,16 @@ export const useStore = create<StoreState>((set) => ({
   activeItems: [],
   tempItems: [],
   doneItems: [],
+  swaps: 0,
+  comparisons: 0,
+  time: 0,
   setIsMobile: (isMobile) => set({ isMobile }),
   setIsPlaying: (isPlaying) => set({ isPlaying }),
   setDisplayMode: (displayMode) => set({ displayMode }),
   setActiveAlgorithm: (algorithm) =>
     set((state) => ({
       activeAlgorithm: algorithm,
-      items:generateRandomArray(state.size),
+      items: generateRandomArray(state.size),
       arrayId: state.arrayId + 1,
       activeItems: [],
       tempItems: [],
@@ -83,6 +92,9 @@ export const useStore = create<StoreState>((set) => ({
     set((state) => ({
       doneItems: resolveState(doneItems, state.doneItems),
     })),
+  setSwaps: (swaps) => set({ swaps }),
+  setComparisons: (comparisons) => set({ comparisons }),
+  setTime: (time) => set({ time }),
   createNewArray: () =>
     set((state) => ({
       items: generateRandomArray(state.size),
