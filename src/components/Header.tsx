@@ -12,7 +12,7 @@ export const Header = () => {
         <h1 className="text-2xl lg:text-4xl font-semibold">
           {sortingAlgorithms[activeAlgorithm].title}
         </h1>
-        <div className="flex items-center gap-4 bg-accent lg:bg-background p-4 lg:p-1 rounded  border border-foreground">
+        <div className="flex items-center gap-4 bg-accent lg:bg-background p-4 lg:p-1 rounded  border-2 border-accent">
           <div className="flex items-center gap-2 font-medium lg:flex-row lg:px-4 lg:py-2 lg:rounded text-foreground">
             <span>Time Complexity</span>
             <ClockIcon className="w-4 h-4 text-foreground" />

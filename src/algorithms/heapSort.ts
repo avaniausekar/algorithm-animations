@@ -1,112 +1,114 @@
-import { StoreState, useStore } from "../constants/storeState";
-import { markAsDone, sleep, swap } from "./helper";
-
-type SortConfig = Pick<
-  StoreState,
-  | "setItems"
-  | "setActiveItems"
-  | "setTempItems"
-  | "setDoneItems"
-  | "speedRef"
-  | "abortRef"
->;
-
-const partition = async (
-  arr: number[],
-  left: number,
-  right: number,
-  config: SortConfig
-): Promise<number | null> => {
-  const {
-    setItems,
-    setActiveItems,
-    setTempItems,
-    setDoneItems,
-    speedRef,
-    abortRef,
-  } = config;
-
-  if (abortRef.current) return null; // Stop if abortRef is set
-
-  const pivotValue = arr[right];
-  let pivotIndex = left;
-
-  for (let i = left; i < right; i++) {
-    if (abortRef.current) return null; // Stop if abortRef is set
-    setActiveItems([arr[i], pivotValue]);
-    await sleep(speedRef.current);
-
-    if (arr[i] < pivotValue) {
-      swap(arr, i, pivotIndex);
-      pivotIndex++;
-      setTempItems([...arr.slice(left, pivotIndex)]);
-      setItems([...arr]);
-    }
-  }
-
-  swap(arr, pivotIndex, right);
-  setItems([...arr]);
-  setTempItems([]);
-  markAsDone(arr[pivotIndex], setDoneItems); // Mark the pivot as done
-
-  return pivotIndex;
-};
-
-const sort = async (
-  arr: number[],
-  left: number,
-  right: number,
-  config: SortConfig
-): Promise<void> => {
-  if (left < right) {
-    const partitionIndex = await partition(arr, left, right, config);
-    if (partitionIndex === null) {
-      config.setActiveItems([]); // Ensure active items are cleared
-      return;
-    }
-    await sort(arr, left, partitionIndex - 1, config);
-    await sort(arr, partitionIndex + 1, right, config);
-  } else if (left === right) {
-    markAsDone(arr[left], config.setDoneItems);
-  }
-
-  if (left === 0 && right === arr.length - 1) {
-    config.setActiveItems([]);
-  }
-};
+import { useStore } from "../constants/storeState";
+import { sleep } from "./helper";
 
 export const useHeapSort = () => {
   const {
     items,
     setItems,
     setActiveItems,
-    setTempItems,
     setDoneItems,
     speedRef,
     abortRef,
+    setSwaps,
+    setComparisons,
+    setTime,
   } = useStore();
 
-  const config: SortConfig = {
-    setItems,
-    setActiveItems,
-    setTempItems,
-    setDoneItems,
-    speedRef,
-    abortRef,
-  };
+  // Function to heapify a subtree rooted at index i
+  const heapify = async (arr: number[], n: number, i: number, swaps: { count: number }, comparisons: { count: number }) => {
+    let largest = i;
+    const left = 2 * i + 1;
+    const right = 2 * i + 2;
 
-  const handleSort = async () => {
-    try {
-      await sort([...items], 0, items.length - 1, config);
-    } finally {
-      if (abortRef.current) {
-        config.setDoneItems([]); // Clear done items
+    if (left < n) {
+      setActiveItems([arr[i], arr[left]]);
+      await sleep(speedRef.current);
+      comparisons.count++;
+      setComparisons(comparisons.count);
+
+      if (arr[left] > arr[largest]) {
+        largest = left;
       }
-      config.abortRef.current = false; // Ensure abortRef is reset
-      config.setActiveItems([]); // Clear active items
-      config.setTempItems([]); // Clear temp items
+    }
+
+    if (right < n) {
+      setActiveItems([arr[largest], arr[right]]);
+      await sleep(speedRef.current);
+      comparisons.count++;
+      setComparisons(comparisons.count);
+
+      if (arr[right] > arr[largest]) {
+        largest = right;
+      }
+    }
+
+    if (largest !== i) {
+      [arr[i], arr[largest]] = [arr[largest], arr[i]];
+      swaps.count++;
+      setSwaps(swaps.count);
+      setItems([...arr]);
+      await sleep(speedRef.current);
+
+      if (abortRef.current) return;
+
+      await heapify(arr, n, largest, swaps, comparisons);
     }
   };
 
-  return handleSort;
+  // Main heap sort function
+  const heapSort = async (arr: number[], swaps: { count: number }, comparisons: { count: number }) => {
+    const n = arr.length;
+
+    // Build max heap
+    for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+      await heapify(arr, n, i, swaps, comparisons);
+      if (abortRef.current) return;
+    }
+
+    // Extract elements from heap one by one
+    for (let i = n - 1; i > 0; i--) {
+      [arr[0], arr[i]] = [arr[i], arr[0]];
+      swaps.count++;
+      setSwaps(swaps.count);
+      setItems([...arr]);
+      setDoneItems((prev) => [...prev, arr[i]]);
+      await sleep(speedRef.current);
+
+      if (abortRef.current) return;
+
+      await heapify(arr, i, 0, swaps, comparisons);
+    }
+
+    setDoneItems([...arr]);
+  };
+
+  const sort = async () => {
+    let swaps = { count: 0 };
+    let comparisons = { count: 0 };
+    const startTime = performance.now();
+    let interval: ReturnType<typeof setInterval>;
+
+    const startInterval = () => {
+      interval = setInterval(() => {
+        setTime((performance.now() - startTime) / 1000);
+      }, 100);
+    };
+
+    const stopInterval = () => {
+      clearInterval(interval);
+    };
+
+    startInterval();
+    
+    await heapSort([...items], swaps, comparisons);
+    stopInterval();
+    
+    setTime((performance.now() - startTime) / 1000);
+
+    if (abortRef.current) {
+      abortRef.current = false;
+    }
+  };
+
+  return sort;
 };

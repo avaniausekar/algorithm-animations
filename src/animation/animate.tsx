@@ -86,7 +86,7 @@ export const AlgorithmVisualizer = () => {
     <div className="text-foreground text-center w-full flex justify-between px-4 font-bold">
         <span>Swaps: <span className="font-normal">{swaps}</span></span>
         <span>Comparisons: <span className="font-normal">{comparisons}</span></span>
-        <span>Time: <span className="font-normal">{time.toFixed(2)} ms</span></span>
+        <span>Time: <span className="font-normal">{time.toFixed(2)} sec</span></span>
       </div>
       <Reorder.Group
         ref={containerRef}
