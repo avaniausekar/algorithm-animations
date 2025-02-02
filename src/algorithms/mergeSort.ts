@@ -9,15 +9,19 @@ type SortConfig = Pick<
   | "setDoneItems"
   | "speedRef"
   | "abortRef"
+  | "setSwaps"
+  | "setComparisons"
+  | "setTime"
 >;
 
 const merge = async (
   leftArr: number[],
   rightArr: number[],
-  config: SortConfig
+  config: SortConfig,
+  swaps: { count: number },
+  comparisons: { count: number }
 ): Promise<number[] | null> => {
-  const { setItems, setActiveItems, speedRef, abortRef, setTempItems } = config;
-
+  const { setItems, setActiveItems, speedRef, abortRef, setTempItems, setComparisons, setSwaps } = config;
   const sortedArray: number[] = [];
   setActiveItems([...leftArr, ...rightArr]);
   await sleep(speedRef.current);
@@ -26,14 +30,17 @@ const merge = async (
     if (abortRef.current) {
       setActiveItems([]);
       setTempItems([]);
-      return null; // Stop if abortRef is set
+      return null;
     }
 
     if (leftArr.length && rightArr.length) {
+      setComparisons(comparisons.count ++ ); // Real-time comparisons update
       if (leftArr[0] < rightArr[0]) {
         sortedArray.push(leftArr.shift()!);
       } else {
         sortedArray.push(rightArr.shift()!);
+        swaps.count++; // Track swap in mutable object
+        setSwaps(swaps.count); // Update swaps in store
       }
     } else if (leftArr.length) {
       sortedArray.push(leftArr.shift()!);
@@ -53,12 +60,6 @@ const merge = async (
       ];
     });
     await sleep(speedRef.current);
-
-    if (abortRef.current) {
-      setActiveItems([]);
-      setTempItems([]);
-      return null; // Check abortRef again after sleep
-    }
   }
 
   setActiveItems([]);
@@ -68,27 +69,29 @@ const merge = async (
 
 const mergeSort = async (
   arr: number[],
-  config: SortConfig
+  config: SortConfig,
+  swaps: { count: number },
+  comparisons: { count: number }
 ): Promise<number[] | null> => {
   if (config.abortRef.current) {
     config.setActiveItems([]);
     config.setTempItems([]);
-    return null; // Abort early if abortRef is set
+    return null;
   }
 
   if (arr.length <= 1) return arr;
 
   const middleIndex = Math.floor(arr.length / 2);
-  const leftArr = await mergeSort(arr.slice(0, middleIndex), config);
-  const rightArr = await mergeSort(arr.slice(middleIndex), config);
+  const leftArr = await mergeSort(arr.slice(0, middleIndex), config, swaps,comparisons);
+  const rightArr = await mergeSort(arr.slice(middleIndex), config, swaps,comparisons);
 
   if (leftArr === null || rightArr === null) {
     config.setActiveItems([]);
     config.setTempItems([]);
-    return null; // Propagate null if aborted
+    return null;
   }
 
-  return await merge(leftArr, rightArr, config);
+  return await merge(leftArr, rightArr, config, swaps,comparisons);
 };
 
 export const useMergeSort = () => {
@@ -100,6 +103,9 @@ export const useMergeSort = () => {
     setDoneItems,
     speedRef,
     abortRef,
+    setSwaps,
+    setComparisons,
+    setTime,
   } = useStore();
 
   const config: SortConfig = {
@@ -109,18 +115,42 @@ export const useMergeSort = () => {
     setDoneItems,
     speedRef,
     abortRef,
+    setSwaps,
+    setComparisons,
+    setTime,
   };
 
   const sort = async () => {
-    const sortedArray = await mergeSort([...items], config);
+    let swaps = { count: 0 };
+    let comparisons = { count: 0 };
+    const startTime = performance.now();
+    let interval: ReturnType<typeof setInterval>;
+
+    const startInterval = () => {
+      interval = setInterval(() => {
+        setTime((performance.now() - startTime) / 1000);
+      }, 100);
+    };
+
+    const stopInterval = () => {
+      clearInterval(interval);
+    };
+
+    startInterval();
+
+    const sortedArray = await mergeSort([...items], config, swaps, comparisons);
+    stopInterval();
+
     if (sortedArray !== null && !abortRef.current) {
       setItems(sortedArray);
       setDoneItems(sortedArray);
     }
     setActiveItems([]);
-
+    setTime((performance.now() - startTime) / 1000);
+    setSwaps(swaps.count);
+    
     if (abortRef.current) {
-      abortRef.current = false; // Reset abortRef after sorting is complete
+      abortRef.current = false;
     }
   };
 

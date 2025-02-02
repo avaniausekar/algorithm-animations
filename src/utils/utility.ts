@@ -1,4 +1,4 @@
-// THis function/utility helps ensure you don’t accidentally end up with conflicting Tailwind classes 
+// This function/utility helps ensure you don’t accidentally end up with conflicting Tailwind classes 
 // when dynamically building your class names
 
 import { clsx, type ClassValue } from "clsx"

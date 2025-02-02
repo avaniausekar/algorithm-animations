@@ -1,10 +1,7 @@
 import { PauseIcon, PlayIcon, UpdateIcon } from "@radix-ui/react-icons";
 import { Button } from "../components/Button";
-
 import { useSortingAlgorithms } from "../algorithms/sortingAlgoMenu";
 import { useStore } from "../constants/storeState";
-
-
 import type { Algorithm } from "../constants/algoTypes";
 
 export const Controls = () => {

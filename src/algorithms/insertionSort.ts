@@ -10,11 +10,30 @@ export const useInsertionSort = () => {
     speedRef,
     setTempItems,
     abortRef,
+    setSwaps,
+    setComparisons,
+    setTime,
   } = useStore();
 
   const insertionSort = async () => {
     const arr = [...items];
     setTempItems([arr[0]]);
+    let swaps = 0;
+    let comparisons = 0;
+    const startTime = performance.now();
+    let interval: ReturnType<typeof setInterval>;
+
+    const startInterval = () => {
+      interval = setInterval(() => {
+        setTime(((performance.now() - startTime) / 1000)); // Update time in seconds
+      }, 100);
+    };
+
+    const stopInterval = () => {
+      clearInterval(interval);
+    };
+
+    startInterval();
 
     for (let i = 1; i < arr.length; i++) {
       if (abortRef.current) break; // Check if animation should stop
@@ -27,16 +46,24 @@ export const useInsertionSort = () => {
 
         setActiveItems([current, compared]);
         await sleep(speedRef.current);
+        comparisons++;
+        setComparisons(comparisons);
+
         if (compared > current) {
           swap(arr, j, j + 1);
           setItems([...arr]);
           setTempItems((prev) => [...prev, current]);
+          swaps++;
+          setSwaps(swaps);
         } else {
           break;
         }
       }
       setTempItems((prev) => [...prev, current]);
     }
+
+    stopInterval();
+    setTime((performance.now() - startTime) / 1000);
 
     setActiveItems([]);
     setTempItems([]);
