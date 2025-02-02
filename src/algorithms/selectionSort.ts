@@ -55,7 +55,7 @@ export const useSelectionSort = () => {
       const minIndex = await findMinIndex(result, i);
       if (minIndex === -1) {
         setActiveItems([]); // Clear active items
-        setDoneItems([]); // Clear done items
+        setDoneItems([]);
         abortRef.current = false; // Reset abortRef
         stopInterval();
         return;

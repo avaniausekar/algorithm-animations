@@ -23,8 +23,8 @@ const bubble = async ({
   let interval: ReturnType<typeof setInterval>;
   const startInterval = () => {
     interval = setInterval(() => {
-      setTime(((performance.now() - startTime) / 1000)); // Update time in seconds
-    }, 100); // Update every 100ms
+      setTime(((performance.now() - startTime) / 1000)); // Update tim
+    }, 100);
   };
 
   const stopInterval = () => {
@@ -36,7 +36,7 @@ const bubble = async ({
   for (let i = 0; i < len; i++) {
     for (let j = 0; j < len - 1 - i; j++) {
       if (abortRef.current) {
-        stopInterval(); // Clear the interval if sorting is aborted
+        stopInterval(); // Clear 
         return;
       }
 
@@ -82,9 +82,9 @@ export const useBubbleSort = () => {
     });
 
     if (abortRef.current) {
-      setActiveItems([]); // Clear active items
-      setDoneItems([]); // Clear done items
-      abortRef.current = false; // Reset abortRef
+      setActiveItems([]);
+      setDoneItems([]);
+      abortRef.current = false;
       return;
     }
     setDoneItems([...result]);

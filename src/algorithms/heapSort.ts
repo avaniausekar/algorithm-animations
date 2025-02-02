@@ -53,19 +53,19 @@ export const useHeapSort = () => {
 
       await heapify(arr, n, largest, swaps, comparisons);
     }
+    setActiveItems([]);
   };
 
-  // Main heap sort function
   const heapSort = async (arr: number[], swaps: { count: number }, comparisons: { count: number }) => {
     const n = arr.length;
 
-    // Build max heap
     for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
       await heapify(arr, n, i, swaps, comparisons);
       if (abortRef.current) return;
     }
 
-    // Extract elements from heap one by one
+    setActiveItems([]);
+
     for (let i = n - 1; i > 0; i--) {
       [arr[0], arr[i]] = [arr[i], arr[0]];
       swaps.count++;
@@ -99,10 +99,11 @@ export const useHeapSort = () => {
     };
 
     startInterval();
-    
+
     await heapSort([...items], swaps, comparisons);
     stopInterval();
-    
+
+    setActiveItems([]);
     setTime((performance.now() - startTime) / 1000);
 
     if (abortRef.current) {

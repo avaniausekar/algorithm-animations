@@ -17,7 +17,7 @@ export default {
         background: "rgb(238, 241, 255)",
         foreground: "rgb(20, 40, 80)",
         accent: "rgb(170, 196, 255)",
-        primary: "rgb(128, 130, 215)",
+        primary: "rgb(63, 114, 175)",
         secondary: "rgb(176, 85, 237)",
         tertiary: "rgb(0, 201, 220)",  
       },

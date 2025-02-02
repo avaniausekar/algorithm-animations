@@ -34,13 +34,13 @@ const merge = async (
     }
 
     if (leftArr.length && rightArr.length) {
-      setComparisons(comparisons.count ++ ); // Real-time comparisons update
+      setComparisons(comparisons.count++); // Real-time comparisons update
       if (leftArr[0] < rightArr[0]) {
         sortedArray.push(leftArr.shift()!);
       } else {
         sortedArray.push(rightArr.shift()!);
         swaps.count++; // Track swap in mutable object
-        setSwaps(swaps.count); // Update swaps in store
+        setSwaps(swaps.count); // Update 
       }
     } else if (leftArr.length) {
       sortedArray.push(leftArr.shift()!);
@@ -82,8 +82,8 @@ const mergeSort = async (
   if (arr.length <= 1) return arr;
 
   const middleIndex = Math.floor(arr.length / 2);
-  const leftArr = await mergeSort(arr.slice(0, middleIndex), config, swaps,comparisons);
-  const rightArr = await mergeSort(arr.slice(middleIndex), config, swaps,comparisons);
+  const leftArr = await mergeSort(arr.slice(0, middleIndex), config, swaps, comparisons);
+  const rightArr = await mergeSort(arr.slice(middleIndex), config, swaps, comparisons);
 
   if (leftArr === null || rightArr === null) {
     config.setActiveItems([]);
@@ -91,7 +91,7 @@ const mergeSort = async (
     return null;
   }
 
-  return await merge(leftArr, rightArr, config, swaps,comparisons);
+  return await merge(leftArr, rightArr, config, swaps, comparisons);
 };
 
 export const useMergeSort = () => {
@@ -148,7 +148,7 @@ export const useMergeSort = () => {
     setActiveItems([]);
     setTime((performance.now() - startTime) / 1000);
     setSwaps(swaps.count);
-    
+
     if (abortRef.current) {
       abortRef.current = false;
     }

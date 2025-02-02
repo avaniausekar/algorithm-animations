@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { Navbar } from "./navbar";
 import { Separator } from "./components/Separator";
 import { Settings } from "./Settings";
+import Footer from "./components/Footer";
 function App() {
   const { setSize } = useStore();
   useEffect(() => {
@@ -21,6 +22,7 @@ function App() {
         </div>
         <AlgorithmVisualizer />
       </main>
+      <Footer />
     </div>
   );
 }

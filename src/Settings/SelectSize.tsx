@@ -26,9 +26,8 @@ export const SizeSelector = () => {
           <Button
             key={size}
             variant="ghost"
-            className={`px-4 py-2 text-base capitalize border-2 border-accent hover:bg-accent hover:text-background ${
-              Number(size) === activeSize ? "bg-accent text-black" : ""
-            }`}
+            className={`px-4 py-2 text-base capitalize border-2 border-accent hover:bg-accent hover:text-background ${Number(size) === activeSize ? "bg-accent text-black" : ""
+              }`}
             onClick={() => handleSizeChange(Number(size))}
             disabled={isPlaying || (displayMode === "numbers" && Number(size) > 20)}
           >

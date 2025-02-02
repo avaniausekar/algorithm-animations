@@ -1,4 +1,4 @@
-import { PauseIcon, PlayIcon, UpdateIcon } from "@radix-ui/react-icons";
+import { StopIcon, PlayIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { Button } from "../components/Button";
 import { useSortingAlgorithms } from "../algorithms/sortingAlgoMenu";
 import { useStore } from "../constants/storeState";
@@ -42,7 +42,6 @@ export const Controls = () => {
 
   return (
     <div className="flex flex-col lg:flex-row items-center gap-2">
-      {/* <SpeedSlider /> */}
       <div className="flex items-center gap-4 w-full lg:w-auto">
         <Button
           variant="ghost"
@@ -51,7 +50,7 @@ export const Controls = () => {
           disabled={!isPlaying && isDone}
         >
           {isPlaying ? (
-            <PauseIcon className="h-4 w-4 mr-2" />
+            <StopIcon className="h-4 w-4 mr-2" />
           ) : (
             <PlayIcon className="h-4 w-4 mr-2" />
           )}
@@ -62,17 +61,16 @@ export const Controls = () => {
           variant="ghost"
           className="bg-background border-2 border-accent hover:bg-accent text-base text-foreground hover:text-foreground h-auto px-4 py-2 w-full lg:w-48"
           onClick={() => {
-            createNewArray(); 
+            createNewArray();
             setSwaps(0);
-            setComparisons(0); 
-            setTime(0); 
+            setComparisons(0);
+            setTime(0);
           }}
           disabled={isPlaying}
         >
-          <UpdateIcon className="h-4 w-4 mr-2" /> Reset
+          <ReloadIcon className="h-4 w-4 mr-2" /> Reset
         </Button>
       </div>
-      {/* <SpeedSlider /> */}
     </div>
   );
 };

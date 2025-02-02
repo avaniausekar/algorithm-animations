@@ -32,9 +32,8 @@ export const DisplayModeSelector = () => {
           <Button
             key={mode}
             variant="ghost"
-            className={`px-4 py-2 capitalize border-2 border-accent hover:bg-accent hover:text-background ${
-              mode === displayMode ? "bg-accent text-black" : ""
-            }`}
+            className={`px-4 py-2 capitalize border-2 border-accent hover:bg-accent hover:text-background ${mode === displayMode ? "bg-accent text-black" : ""
+              }`}
             onClick={() => handleDisplayModeChange(mode)}
             disabled={isPlaying}
           >

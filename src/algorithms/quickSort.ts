@@ -80,11 +80,11 @@ const partition = async (
   setSwaps(swaps);
   setItems([...arr]);
   setTempItems([]);
-  markAsDone(arr[pivotIndex], setDoneItems); // Mark the pivot as done
+  markAsDone(arr[pivotIndex], setDoneItems);
 
   stopInterval();
 
-  return [pivotIndex, swaps, comparisons]; // Return the updated swaps and comparisons
+  return [pivotIndex, swaps, comparisons];
 };
 
 const sort = async (
@@ -108,22 +108,21 @@ const sort = async (
     );
 
     if (partitionResult === null) {
-      config.setActiveItems([]); // Ensure active items are cleared
-      return null; // Return null if partition was aborted
+      config.setActiveItems([]);
+      return null; // if partition was aborted
     }
 
     const [partitionIndex, newSwaps, newComparisons] = partitionResult;
 
-    // Recurse on the two halves
+
     const leftResult = await sort(arr, left, partitionIndex - 1, config, startTime, newSwaps, newComparisons);
     const rightResult = await sort(arr, partitionIndex + 1, right, config, startTime, newSwaps, newComparisons);
 
-    // Return the final values after recursion
+
     if (leftResult && rightResult) {
       const [leftSwaps, leftComparisons] = leftResult;
       const [rightSwaps, rightComparisons] = rightResult;
 
-      // Return final updated swaps and comparisons
       return [Math.max(leftSwaps, rightSwaps), Math.max(leftComparisons, rightComparisons)];
     }
   } else if (left === right) {
@@ -134,7 +133,7 @@ const sort = async (
     config.setActiveItems([]);
   }
 
-  // Return final values
+
   return [swaps, comparisons];
 };
 
@@ -165,9 +164,7 @@ export const useQuickSort = () => {
   };
 
   const handleSort = async () => {
-    const startTime = performance.now(); // Start timing the whole sort
-
-    // Initialize swaps and comparisons at the start
+    const startTime = performance.now(); // Start timing
     let swaps = 0;
     let comparisons = 0;
 
@@ -181,7 +178,6 @@ export const useQuickSort = () => {
       config.setActiveItems([]);
       config.setTempItems([]);
 
-      // Set final time after sorting is complete
       const endTime = performance.now();
       setTime(((endTime - startTime) / 1000));
     }

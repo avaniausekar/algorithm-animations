@@ -13,5 +13,5 @@ export const useSortingAlgorithms = () => {
   const mergeSort = useMergeSort();
   const heapSort = useHeapSort();
 
-  return { selectionSort, bubbleSort, quickSort, insertionSort, mergeSort,heapSort };
+  return { selectionSort, bubbleSort, quickSort, insertionSort, mergeSort, heapSort };
 };
